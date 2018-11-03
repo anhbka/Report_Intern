@@ -134,6 +134,23 @@ exit</pre>
 </ul>
 <p><strong>Cấu hình migration</strong></p>
 <p> Sửa lại file libvirt.conf dùng  vi /etc/libvirt/libvirtd.conf</p>
+
+``` sh
+Cấu hình migration
+
+sed -i 's/#listen_tls = 0/listen_tls = 0/g' /etc/libvirt/libvirtd.conf
+sed -i 's/#listen_tcp = 1/listen_tcp = 1/g' /etc/libvirt/libvirtd.conf
+sed -i 's/#auth_tcp = "sasl"/auth_tcp = "none"/g' /etc/libvirt/libvirtd.conf
+sed -i 's/#LIBVIRTD_ARGS="--listen"/LIBVIRTD_ARGS="--listen"/g' /etc/sysconfig/libvirtd
+Restart lại dịch vụ:
+systemctl restart libvirtd
+systemctl restart openstack-nova-compute.service
+Nếu sử dụng block live migration cho các VMs boot từ local thì sửa file nova.conf rồi restart lại dịch vụ nova-compute :
+[libvirt]
+.......
+block_migration_flag=VIR_MIGRATE_UNDEFINE_SOURCE, VIR_MIGRATE_PEER2PEER, VIR_MIGRATE_LIVE, VIR_MIGRATE_NON_SHARED_INC
+......
+```
 <pre>listen_tls = 0
 listen_tcp = 1
 listen_addr = "0.0.0.0"
