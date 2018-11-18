@@ -1,4 +1,4 @@
-# Thư mục chứa các file notes trong quá trình tìm hiểu OpenStack của ThaoNV
+
 
 ## Mục Lục
 
